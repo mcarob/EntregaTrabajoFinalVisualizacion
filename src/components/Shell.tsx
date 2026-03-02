@@ -104,7 +104,6 @@ export default function Shell() {
               </div>
               <div>
                 <div className="text-sm font-semibold text-slate-900">Proyecto Visualización y storytelling: Grupo 16</div>
-                <div className="text-xs text-slate-500"> Dashboard Looker · Docs · Notebook</div>
               </div>
             </div>
           </div>
