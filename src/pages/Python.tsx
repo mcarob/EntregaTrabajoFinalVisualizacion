@@ -6,7 +6,7 @@ import NotebookViewer from "../components/NotebookViewer";
 export default function PythonPage() {
   // GitHub Pages serves static assets from the repository root.
   // Place the notebook at: /codigo/transformaciones.ipynb
-  const NOTEBOOK_PATH = "/codigo/transformaciones.ipynb";
+  const NOTEBOOK_PATH = `${import.meta.env.BASE_URL}codigo/transformaciones.ipynb`;
 
   return (
     <div className="space-y-6">
