@@ -120,7 +120,7 @@ export default function NotebookViewer({ path }: { path: string }) {
         const json = (await res.json()) as Notebook;
         if (!cancelled) setNb(json);
       } catch (e: any) {
-        if (!cancelled) setEgrror(e?.message || "Error cargando notebook");
+        if (!cancelled) setError(e?.message || "Error cargando notebook");
       } finally {
         if (!cancelled) setLoading(false);
       }
