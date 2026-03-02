@@ -66,7 +66,7 @@ function NavItem({
 function PageHeader() {
   const { pathname } = useLocation();
  // const title = pathname === "/" ? "Dashboard Proyecto Visualización y storytelling: Grupo 16" : pathname === "/docs" ? "Documentación" : "Python";
-  const title =  "Dashboard Proyecto Visualización y storytelling: Grupo 16" ;
+  const title =  "Determinantes del salario real en Estados Unidos: una comparación entre experiencia individual y contexto socioeconómico" ;
   return (
     <div className={classNames("rounded-3xl border p-5", TOKENS.surface, TOKENS.border, TOKENS.shadow)}>
       <div className="flex flex-wrap items-center justify-between gap-3">
