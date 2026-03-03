@@ -35,11 +35,6 @@ function getEmbedError(url: string) {
 export default function DashboardPage() {
   const embedError = useMemo(() => getEmbedError(LOOKER_EMBED_URL), []);
 
-  // iOS: el embed suele fallar dentro de iframe aunque el link abra bien
-  const isIOS =
-      typeof navigator !== "undefined" &&
-      /iPad|iPhone|iPod/.test(navigator.userAgent);
-
   // Archivos en public/
   const CSV_PATH = `${import.meta.env.BASE_URL}datos.csv`;
   const XLSX_PATH = `${import.meta.env.BASE_URL}datos.xlsx`;
@@ -74,7 +69,7 @@ export default function DashboardPage() {
                 poder adquisitivo. La idea no es solo informar, sino invitarte a mirar el mercado laboral con más contexto.
               </p>
 
-              {/* Nuevo bloque: descarga datos */}
+              {/* Descarga datos */}
               <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                 <div className="text-sm font-semibold text-slate-900">¿Quieres ver los datos?</div>
                 <div className="mt-1 text-sm text-slate-700">
@@ -102,7 +97,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="mt-2 text-xs text-slate-500">
-                  Archivos: <b>datos.csv</b> y <b>datos.xlsx</b> .
+                  Archivos: <b>datos.csv</b> y <b>datos.xlsx</b> (en <b>public/</b>).
                 </div>
               </div>
             </div>
@@ -127,7 +122,9 @@ export default function DashboardPage() {
                 </ul>
 
                 <button
-                    onClick={() => document.getElementById("looker-embed")?.scrollIntoView({ behavior: "smooth" })}
+                    onClick={() =>
+                        document.getElementById("looker-embed")?.scrollIntoView({ behavior: "smooth" })
+                    }
                     className="mt-4 w-full rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Ir al dashboard
@@ -140,7 +137,7 @@ export default function DashboardPage() {
                     className="mt-3 inline-flex w-full items-center justify-center gap-2 text-xs font-semibold text-indigo-700 underline"
                 >
                   <ExternalLink className="h-4 w-4" />
-                  ¿No puedes Visualizarlo? Abrir dashboard en nueva pestaña
+                  Abrir dashboard en nueva pestaña
                 </a>
               </div>
             </div>
@@ -148,11 +145,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Iframe */}
-        <Card
-            title="Visualización del Dashboard"
-            subtitle="Looker Studio (embed)"
-            right=""
-        >
+        <Card title="Visualización del Dashboard" subtitle="Looker Studio (embed)" right={<Pill tone="cyan">Iframe</Pill>}>
           <div id="looker-embed" className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
             <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
               <div className="text-sm font-semibold text-slate-900">Dashboard</div>
@@ -165,25 +158,6 @@ export default function DashboardPage() {
                     <div className="max-w-xl rounded-2xl border border-amber-200 bg-amber-50 p-5">
                       <p className="text-sm font-semibold text-amber-900">No se pudo cargar el embed</p>
                       <p className="mt-2 text-sm text-amber-800">{embedError}</p>
-                    </div>
-                  </div>
-              ) : isIOS ? (
-                  <div className="flex h-full items-center justify-center bg-slate-50 p-6 text-center">
-                    <div className="max-w-xl rounded-2xl border border-slate-200 bg-white p-5">
-                      <p className="text-sm font-semibold text-slate-900">
-                        En iPhone/iPad el dashboard puede fallar dentro del iframe
-                      </p>
-                      <p className="mt-2 text-sm text-slate-700">
-                        Para verlo sin errores, ábrelo en una nueva pestaña.
-                      </p>
-                      <a
-                          href={LOOKER_EMBED_URL}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="mt-4 inline-flex items-center justify-center rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
-                      >
-                        Abrir dashboard
-                      </a>
                     </div>
                   </div>
               ) : (
