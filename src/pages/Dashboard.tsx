@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { Download, ExternalLink, Layers, LayoutDashboard, Info } from "lucide-react";
-import { Card, Pill, SectionTitle } from "../components/ui";
+import { Download, ExternalLink, Layers, Info } from "lucide-react";
+import { Card, Pill } from "../components/ui";
 
 const DASHBOARD_PRINCIPAL_URL =
     "https://lookerstudio.google.com/embed/reporting/bd00f8cb-445b-4d9b-8518-5e5b0756bcae/page/1M";
@@ -79,19 +79,15 @@ y lecturas que ayudan a interpretar el tablero.`;
 
   return (
       <div className="space-y-6">
-        {/* ✅ SectionTitle más simple para que NO se vea raro */}
-        <SectionTitle
-            icon={LayoutDashboard}
-            title="Visualización del Dashboard"
-            desc="Explora el tablero principal y el panel de hallazgos."
-            right={<Pill tone="brand">Looker Studio</Pill>}
-        />
-
         {/* (A) HERO / TÍTULO GRANDE */}
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
-          <h1 className="text-xl font-semibold leading-snug text-slate-900">
-            Determinantes del salario real en Estados Unidos: una comparación entre experiencia individual y contexto socioeconómico
-          </h1>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-xl font-semibold leading-snug text-slate-900">
+              Determinantes del salario real en Estados Unidos: una comparación entre experiencia individual y
+              contexto socioeconómico
+            </h1>
+            <Pill tone="brand">Looker Studio</Pill>
+          </div>
         </div>
 
         {/* (B) DATOS (general) */}
