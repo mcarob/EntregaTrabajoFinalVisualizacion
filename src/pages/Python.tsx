@@ -1,10 +1,11 @@
 import React from "react";
-import { Code2, Download, ExternalLink, Eye } from "lucide-react";
+import { Code2, Download, Eye, FileText } from "lucide-react";
 import { Card, Pill, SectionTitle } from "../components/ui";
 import NotebookViewer from "../components/NotebookViewer";
 
 export default function PythonPage() {
     const NOTEBOOK_PATH = `${import.meta.env.BASE_URL}codigo/transformaciones.ipynb`;
+    const INFORME_PATH = `${import.meta.env.BASE_URL}docs/informeTecnico.pdf`;
 
     return (
         <div className="space-y-6">
@@ -15,12 +16,54 @@ export default function PythonPage() {
                 right={<Pill tone="brand">.ipynb</Pill>}
             />
 
+            {/* NUEVO: Panel para el informe técnico */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-start gap-3">
+                        <div className="rounded-2xl border border-slate-200 bg-white p-2">
+                            <FileText className="h-5 w-5 text-slate-800" />
+                        </div>
+                        <div>
+                            <div className="text-sm font-semibold text-slate-900">INFORME TÉCNICO</div>
+                            <div className="mt-1 text-sm text-slate-600">
+                                Documento que explica las transformaciones realizadas sobre los datos.
+                            </div>
+                            <div className="mt-2 text-xs text-slate-500">
+                                Archivo: <b>docs/informeTecnico.pdf</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                        <a
+                            href={INFORME_PATH}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                            title="Abrir el PDF en una nueva pestaña"
+                        >
+                            <Eye className="h-4 w-4" />
+                            Ver PDF
+                        </a>
+
+                        <a
+                            href={INFORME_PATH}
+                            download
+                            className="inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+                            title="Descargar el PDF"
+                        >
+                            <Download className="h-4 w-4" />
+                            Descargar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <Card
                 title="transformaciones.ipynb"
                 subtitle="Puedes visualizarlo en la web o descargarlo."
                 right={
                     <div className="flex flex-wrap items-center gap-2">
-                        {/* Visualizar (abre nueva pestaña) */}
                         <a
                             href={NOTEBOOK_PATH}
                             target="_blank"
@@ -32,7 +75,6 @@ export default function PythonPage() {
                             Visualizar
                         </a>
 
-                        {/* Descargar */}
                         <a
                             href={NOTEBOOK_PATH}
                             download
@@ -42,18 +84,6 @@ export default function PythonPage() {
                             <Download className="h-4 w-4" />
                             Descargar
                         </a>
-
-                        {/* Extra opcional (si tienes link al repo/archivo) */}
-                        {/* <a
-              href="https://github.com/...."
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50"
-              title="Ver en GitHub"
-            >
-              <ExternalLink className="h-4 w-4" />
-              GitHub
-            </a> */}
                     </div>
                 }
             >
