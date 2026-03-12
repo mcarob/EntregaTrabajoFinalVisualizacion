@@ -84,16 +84,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
 
   return (
       <div className="space-y-6">
-        {/* (A) HERO / TÍTULO GRANDE */}
-        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="text-xl font-semibold leading-snug text-slate-900">
-              Determinantes del salario real en Estados Unidos: una comparación entre experiencia individual y contexto socioeconómico
-            </h1>
-            <Pill tone="brand">Looker Studio</Pill>
-          </div>
-        </div>
-
         {/* (B) DATOS (general) */}
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
