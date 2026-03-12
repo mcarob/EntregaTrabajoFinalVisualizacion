@@ -1,5 +1,4 @@
 import React from "react";
-
 export const TOKENS = {
   bg: "bg-slate-50",
   surface: "bg-white",
@@ -8,11 +7,9 @@ export const TOKENS = {
   subtle: "text-slate-500",
   shadow: "shadow-[0_12px_40px_-24px_rgba(15,23,42,0.25)]",
 };
-
 export function classNames(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
 }
-
 export function Pill({
   children,
   tone = "default",
@@ -37,7 +34,6 @@ export function Pill({
     </span>
   );
 }
-
 export function Card({
   title,
   subtitle,
@@ -79,7 +75,6 @@ export function Card({
     </div>
   );
 }
-
 export function SectionTitle({
   icon: Icon,
   title,

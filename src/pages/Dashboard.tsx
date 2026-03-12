@@ -1,14 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { Download, ExternalLink, Info } from "lucide-react";
 import { Card, Pill } from "../components/ui";
-
 const LOOKER_EMBED_URL =
     "https://lookerstudio.google.com/embed/reporting/185c7a38-cfb9-450a-822d-244d3c40af07/page/1M";
-
 function isValidEmbed(url: string) {
   return (url || "").includes("lookerstudio.google.com/embed/reporting/");
 }
-
 function SmallTab({
                     active,
                     label,
@@ -33,25 +30,20 @@ function SmallTab({
       </button>
   );
 }
-
 export default function DashboardPage() {
   // Sección de texto dinámica (3 botones)
   const [focus, setFocus] = useState<"general" | "experiencia" | "industria">("general");
-
   const CSV_PATH = `${import.meta.env.BASE_URL}datos.csv`;
   const XLSX_PATH = `${import.meta.env.BASE_URL}datos.xlsx`;
-
   const embedError = useMemo(() => {
     if (!isValidEmbed(LOOKER_EMBED_URL)) {
       return "La URL no parece ser un embed válido de Looker Studio (debe contener /embed/reporting/).";
     }
     return null;
   }, []);
-
   const scrollToDashboard = () => {
     document.getElementById("looker-embed")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-
   const content = useMemo(() => {
     if (focus === "general") {
       return {
@@ -63,7 +55,6 @@ Aquí podrás comparar regiones y perfiles (por ejemplo, nivel educativo y años
 cuando ajustamos por poder adquisitivo.`,
       };
     }
-
     if (focus === "experiencia") {
       return {
         title: "Experiencia individual",
@@ -72,7 +63,6 @@ El mapa de Estados Unidos permite identificar patrones geográficos en el salari
 Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfiles y observar cómo el contexto regional modifica el poder adquisitivo.`,
       };
     }
-
     // industria y contexto (placeholder para que tú lo completes)
     return {
       title: "Industria y contexto",
@@ -81,7 +71,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
 [Espacio reservado para tu texto final].`,
     };
   }, [focus]);
-
   return (
       <div className="space-y-6">
         {/* (B) DATOS (general) */}
@@ -96,7 +85,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
                 Archivos: <b>datos.csv</b> y <b>datos.xlsx</b> (en <b>public/</b>).
               </div>
             </div>
-
             <div className="flex flex-wrap gap-2">
               <a
                   href={CSV_PATH}
@@ -106,7 +94,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
                 <Download className="h-4 w-4" />
                 Descargar CSV
               </a>
-
               <a
                   href={XLSX_PATH}
                   download
@@ -118,7 +105,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
             </div>
           </div>
         </div>
-
         {/* (C) ¿QUÉ MUESTRA? (con 3 botones) + CTA */}
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -127,7 +113,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
                 <Pill tone="brand">Introducción</Pill>
                 <Pill tone="cyan">Cómo leer</Pill>
               </div>
-
               {/* Botones */}
               <div className="mt-4 flex flex-wrap gap-2">
                 <SmallTab
@@ -146,17 +131,14 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
                     onClick={() => setFocus("industria")}
                 />
               </div>
-
               <div className="mt-4 flex items-center gap-2">
                 <Info className="h-5 w-5 text-slate-700" />
                 <h2 className="text-lg font-semibold text-slate-900">{content.title}</h2>
               </div>
-
               <p className="mt-2 whitespace-pre-line text-sm leading-6 text-slate-700">
                 {content.text}
               </p>
             </div>
-
             <div className="w-full lg:w-[360px]">
               <div className="rounded-2xl border border-slate-200 bg-white p-4">
                 <div className="text-xs font-semibold text-slate-600">Guía rápida</div>
@@ -174,14 +156,12 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
                     <span>Explora casos extremos y revisa detalle.</span>
                   </li>
                 </ul>
-
                 <button
                     onClick={scrollToDashboard}
                     className="mt-4 w-full rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Ir al dashboard
                 </button>
-
                 <a
                     href={LOOKER_EMBED_URL}
                     target="_blank"
@@ -195,7 +175,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
             </div>
           </div>
         </div>
-
         {/* (D) IFRAME (1 solo dashboard) */}
         <Card
             title="Dashboard principal"
@@ -207,7 +186,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
               <div className="text-sm font-semibold text-slate-900">Dashboard</div>
               <div className="text-xs text-slate-500">Looker Studio embed</div>
             </div>
-
             <div className="h-[82vh] min-h-[650px]">
               {embedError ? (
                   <div className="flex h-full items-center justify-center bg-slate-50 p-6 text-center">
@@ -233,7 +211,6 @@ Usa los filtros (por ejemplo: nivel educativo y experiencia) para comparar perfi
                       frameBorder={0}
                       style={{ border: 0 }}
                       allowFullScreen
-                      allow="fullscreen"
                       // Nota: el sandbox oficial puede quedarse fuera si te da problemas.
                       // sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
                       referrerPolicy="strict-origin-when-cross-origin"

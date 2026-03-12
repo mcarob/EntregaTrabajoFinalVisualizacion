@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html { scroll-behavior: smooth; }
+
+/* snap tipo “diapositiva” */
+body { scroll-snap-type: y mandatory; }
+section[data-snap="true"] { scroll-snap-align: start; scroll-snap-stop: always; }
+
+/* overlay wipe */
+@keyframes wipeFade {
+    0%   { opacity: 1; transform: translateY(10%); }
+    60%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(0%); }
+}

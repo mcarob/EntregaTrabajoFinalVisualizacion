@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FileText } from "lucide-react";
 import { Card, Pill, SectionTitle } from "../components/ui";
-
 type DictRow = {
   variable: string;
   tipoTecnico?: string;
@@ -10,34 +9,27 @@ type DictRow = {
   rangoCategorias?: string;
   nulos?: string;
 };
-
 function parseMarkdownTable(md: string): DictRow[] {
   // captura líneas de tabla markdown
   const lines = md
       .split("\n")
       .map((l) => l.trim())
       .filter((l) => l.startsWith("|") && l.endsWith("|"));
-
   // header + separator + data...
   if (lines.length < 3) return [];
-
   const headerCells = lines[0]
       .split("|")
       .slice(1, -1)
       .map((c) => c.trim().toLowerCase());
-
   const dataLines = lines.slice(2);
-
   const idx = (name: string) =>
       headerCells.findIndex((h) => h === name || h.includes(name));
-
   const iVar = idx("variable");
   const iTec = idx("tipo técnico");
   const iAna = idx("tipo analítico");
   const iDesc = idx("descripción");
   const iRango = idx("rango");
   const iNulos = idx("nulos");
-
   return dataLines
       .map((line) =>
           line
@@ -56,7 +48,6 @@ function parseMarkdownTable(md: string): DictRow[] {
         const rangoCategorias =
             iRango >= 0 ? cells[iRango] : cells.length >= 5 ? cells[4] : "";
         const nulos = iNulos >= 0 ? cells[iNulos] : cells.length >= 6 ? cells[5] : "";
-
         return {
           variable: variable || "",
           tipoTecnico: tipoTecnico || "",
@@ -68,25 +59,19 @@ function parseMarkdownTable(md: string): DictRow[] {
       })
       .filter((r) => r.variable);
 }
-
 export default function DocsPage() {
   // archivos en public/docs/
   const MD_PATH = `${import.meta.env.BASE_URL}docs/diccionario_datos.md`;
   const PDF_PATH = `${import.meta.env.BASE_URL}docs/diccionario.pdf`;
-
   const [rows, setRows] = useState<DictRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
-
   const [query, setQuery] = useState("");
-
   useEffect(() => {
     let cancelled = false;
-
     async function run() {
       setLoading(true);
       setErr(null);
-
       try {
         const res = await fetch(MD_PATH, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -99,24 +84,20 @@ export default function DocsPage() {
         if (!cancelled) setLoading(false);
       }
     }
-
     run();
     return () => {
       cancelled = true;
     };
   }, [MD_PATH]);
-
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return rows;
-
     return rows.filter((r) => {
       const hay =
           `${r.variable} ${r.tipoTecnico} ${r.tipoAnalitico} ${r.descripcion} ${r.rangoCategorias} ${r.nulos}`.toLowerCase();
       return hay.includes(q);
     });
   }, [rows, query]);
-
   return (
       <div className="space-y-6">
         <SectionTitle
@@ -125,7 +106,6 @@ export default function DocsPage() {
             desc="Soporte del modelado: reglas, decisiones y diccionario de datos."
             right={<Pill tone="brand">Docs</Pill>}
         />
-
         {/* 1) Reglas de decisión ARRIBA */}
         <Card
             title="Reglas y decisiones de modelado"
@@ -153,7 +133,6 @@ export default function DocsPage() {
             </li>
           </ol>
         </Card>
-
         {/* 2) Diccionario ABAJO */}
         <Card
             title="Diccionario de datos"
@@ -175,7 +154,6 @@ export default function DocsPage() {
               <Pill tone="brand">{filtered.length} variables</Pill>
               <Pill>Fuente: diccionario_datos.md</Pill>
             </div>
-
             <div className="w-full sm:w-[360px]">
               <input
                   value={query}
@@ -185,7 +163,6 @@ export default function DocsPage() {
               />
             </div>
           </div>
-
           <div className="mt-4">
             {loading ? (
                 <div className="text-sm text-slate-600">Cargando diccionario…</div>
@@ -229,7 +206,6 @@ export default function DocsPage() {
                 </div>
             )}
           </div>
-
           <div className="mt-3 text-xs text-slate-500">
             Tip: Si el diccionario es largo, usa el buscador. Para lectura completa y formato original, usa <b>Abrir PDF</b>.
           </div>
