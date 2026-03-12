@@ -9,8 +9,7 @@ const DASHBOARD_HALLAZGOS_URL =
     "https://lookerstudio.google.com/embed/reporting/3cb7d34e-734d-48bf-bf04-0becc755263c/page/p_79amiucn1d";
 
 function isValidEmbed(url: string) {
-  const clean = (url || "").trim();
-  return clean.includes("lookerstudio.google.com/embed/reporting/");
+  return (url || "").includes("lookerstudio.google.com/embed/reporting/");
 }
 
 function TabButton({
@@ -44,16 +43,32 @@ export default function DashboardPage() {
   const CSV_PATH = `${import.meta.env.BASE_URL}datos.csv`;
   const XLSX_PATH = `${import.meta.env.BASE_URL}datos.xlsx`;
 
-  const activeUrl =
-      active === "principal" ? DASHBOARD_PRINCIPAL_URL : DASHBOARD_HALLAZGOS_URL;
+  const activeUrl = active === "principal" ? DASHBOARD_PRINCIPAL_URL : DASHBOARD_HALLAZGOS_URL;
 
-  const activeTitle =
-      active === "principal" ? "Dashboard principal" : "Dashboard de hallazgos";
+  const activeTitle = active === "principal" ? "Dashboard principal" : "Dashboard hallazgos";
 
   const activeSubtitle =
       active === "principal"
           ? "Comparación nominal vs salario real ajustado"
-          : "Interpretación / explicación de los hallazgos del análisis";
+          : "Interpretación y explicación de los hallazgos del análisis";
+
+  // ✅ Texto dinámico por dashboard
+  const whatTitle =
+      active === "principal"
+          ? "¿Qué muestra este dashboard?"
+          : "¿Qué explica este dashboard de hallazgos?";
+
+  const whatText =
+      active === "principal"
+          ? `Este dashboard explora cómo cambia el “valor real” de un salario según el lugar donde vives.
+Muchas veces comparamos ingresos solo por el número (salario nominal), pero ese número no cuenta toda la historia:
+el costo de vida y el contexto económico pueden hacer que un salario “alto” rinda menos, y que uno “moderado” alcance más.
+Aquí podrás comparar regiones y perfiles (por ejemplo, nivel educativo y años de experiencia) y ver cómo se reordenan los resultados
+cuando ajustamos por poder adquisitivo. La idea no es solo informar, sino invitarte a mirar el mercado laboral con más contexto.`
+          : `Este dashboard complementa la visualización principal: resume y explica los patrones encontrados.
+Aquí interpretamos los resultados y destacamos comparaciones clave (qué cambia al pasar de salario nominal a salario real),
+qué regiones aparecen como casos extremos y qué variables ayudan a entender esas diferencias.
+La intención es que el usuario conecte los gráficos con una lectura narrativa y conclusiones claras.`;
 
   const embedError = useMemo(() => {
     if (!isValidEmbed(activeUrl)) {
@@ -61,6 +76,11 @@ export default function DashboardPage() {
     }
     return null;
   }, [activeUrl]);
+
+  const scrollToActiveDashboard = () => {
+    const el = document.getElementById("looker-embed");
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
       <div className="space-y-6">
@@ -71,61 +91,20 @@ export default function DashboardPage() {
             right={<Pill tone="brand">Looker Studio</Pill>}
         />
 
-        {/* Intro panel */}
+        {/* Intro + guía rápida (dinámico) */}
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-3xl">
               <div className="flex flex-wrap items-center gap-2">
                 <Pill tone="brand">Introducción</Pill>
                 <Pill tone="cyan">Cómo leer</Pill>
+                <Pill>{activeTitle}</Pill>
               </div>
 
-              <h2 className="mt-3 text-lg font-semibold text-slate-900">
-                ¿Qué muestra este dashboard?
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-slate-700">
-                Este dashboard explora cómo cambia el “valor real” de un salario según el lugar donde vives.
-                Muchas veces comparamos ingresos solo por el número (salario nominal), pero ese número no cuenta
-                toda la historia: el costo de vida y el contexto económico pueden hacer que un salario “alto”
-                rinda menos, y que uno “moderado” alcance más. Aquí podrás comparar regiones y perfiles (por ejemplo,
-                nivel educativo y años de experiencia) y ver cómo se reordenan los resultados cuando ajustamos por
-                poder adquisitivo. La idea no es solo informar, sino invitarte a mirar el mercado laboral con más contexto.
-              </p>
-
-              {/* Descarga datos */}
-              <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-sm font-semibold text-slate-900">¿Quieres ver los datos?</div>
-                <div className="mt-1 text-sm text-slate-700">
-                  Descárgalos para explorar, filtrar y replicar los resultados.
-                </div>
-
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <a
-                      href={CSV_PATH}
-                      download
-                      className="inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
-                  >
-                    <Download className="h-4 w-4" />
-                    Descargar CSV
-                  </a>
-
-                  <a
-                      href={XLSX_PATH}
-                      download
-                      className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-                  >
-                    <Download className="h-4 w-4" />
-                    Descargar Excel
-                  </a>
-                </div>
-
-                <div className="mt-2 text-xs text-slate-500">
-                  Archivos: <b>datos.csv</b> y <b>datos.xlsx</b> (en <b>public/</b>).
-                </div>
-              </div>
+              <h2 className="mt-3 text-lg font-semibold text-slate-900">{whatTitle}</h2>
+              <p className="mt-2 whitespace-pre-line text-sm leading-6 text-slate-700">{whatText}</p>
             </div>
 
-            {/* Guía rápida */}
             <div className="w-full lg:w-[360px]">
               <div className="rounded-2xl border border-slate-200 bg-white p-4">
                 <div className="text-xs font-semibold text-slate-600">Guía rápida</div>
@@ -144,15 +123,15 @@ export default function DashboardPage() {
                   </li>
                 </ul>
 
+                {/* ✅ Baja al dashboard activo */}
                 <button
-                    onClick={() =>
-                        document.getElementById("looker-embed")?.scrollIntoView({ behavior: "smooth" })
-                    }
+                    onClick={scrollToActiveDashboard}
                     className="mt-4 w-full rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Ir al dashboard
                 </button>
 
+                {/* ✅ Abre el dashboard activo */}
                 <a
                     href={activeUrl}
                     target="_blank"
@@ -167,6 +146,41 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* ✅ Bloque GENERAL separado (no depende del tab) */}
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-sm font-semibold text-slate-900">¿Quieres ver los datos?</div>
+              <div className="mt-1 text-sm text-slate-700">
+                Descárgalos para explorar, filtrar y replicar los resultados.
+              </div>
+              <div className="mt-2 text-xs text-slate-500">
+                Archivos: <b>datos.csv</b> y <b>datos.xlsx</b> (en <b>public/</b>).
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <a
+                  href={CSV_PATH}
+                  download
+                  className="inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+              >
+                <Download className="h-4 w-4" />
+                Descargar CSV
+              </a>
+
+              <a
+                  href={XLSX_PATH}
+                  download
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+              >
+                <Download className="h-4 w-4" />
+                Descargar Excel
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Selector de dashboards */}
         <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-[0_12px_40px_-24px_rgba(15,23,42,0.18)]">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -175,12 +189,8 @@ export default function DashboardPage() {
                 <Layers className="h-5 w-5 text-slate-800" />
               </div>
               <div>
-                <div className="text-sm font-semibold text-slate-900">
-                  Cambiar vista de dashboard
-                </div>
-                <div className="text-xs text-slate-500">
-                  Visualización principal y panel de hallazgos.
-                </div>
+                <div className="text-sm font-semibold text-slate-900">Cambiar vista de dashboard</div>
+                <div className="text-xs text-slate-500">Visualización principal y panel de hallazgos.</div>
               </div>
             </div>
 
@@ -200,12 +210,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Iframe */}
-        <Card
-            title={activeTitle}
-            subtitle={activeSubtitle}
-            right={<Pill tone="cyan">Iframe</Pill>}
-        >
-          <div id="looker-embed" className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <Card title={activeTitle} subtitle={activeSubtitle} right={<Pill tone="cyan">Iframe</Pill>}>
+          <div
+              id="looker-embed"
+              className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+          >
             <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
               <div className="text-sm font-semibold text-slate-900">{activeTitle}</div>
               <div className="text-xs text-slate-500">Looker Studio embed</div>
